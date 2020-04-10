@@ -1,7 +1,10 @@
 {
-  "extends": ["plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react-hooks", "@typescript-eslint"],
+  "plugins": ["react-hooks", "@typescript-eslint", "import"],
   "settings": {
     "react": {
       "version": "detect"
