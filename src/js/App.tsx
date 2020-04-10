@@ -1,18 +1,21 @@
 import React, { FC } from 'react';
 
-import { useOpenChat } from './twitch';
+import { ChatProvider } from './ChatContext';
+import ChatWindow from './ChatWindow';
 
 const App: FC = () => {
-  const messages = useOpenChat(window.location.pathname.slice(1));
+  // ha en liste med meldinger som gjentar seg.
+  // ha et vindu med chat som har filterert bort gjentagende meldinger
+  // ha et vindu som viser gjentagende meldinger
+  // vindu for brukere som spammer vs skriver orginale/egne meldinger
+  // ordsky for alle ord
   return (
-    <article>
-      <h2>Twitch Chat View</h2>
-      <section>
-        {messages.map((message) => (
-          <p key={message}>{message}</p>
-        ))}
-      </section>
-    </article>
+    <ChatProvider channel={window.location.pathname.slice(1)}>
+      <article>
+        <h2>Twitch Chat View</h2>
+        <ChatWindow />
+      </article>
+    </ChatProvider>
   );
 };
 

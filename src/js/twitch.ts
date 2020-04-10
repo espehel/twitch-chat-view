@@ -1,38 +1,33 @@
 import { Client } from 'tmi.js';
-import { useEffect, useReducer } from 'react';
 
-export const useOpenChat = (channel: string): string[] => {
-  interface MessageReducer {
-    (prevMessages: string[], newMessages: string[]): string[];
+let messagesBuffer: string[] = [];
+let client: Client | null = null;
+
+export const openChat = async (channel: string): Promise<void> => {
+  if (client) {
+    messagesBuffer = [];
+    await client.disconnect();
   }
-  const [messages, dispatch] = useReducer<MessageReducer>(
-    (prevMessages, newMessages) =>
-      newMessages.concat(prevMessages).slice(0, 100),
-    []
-  );
+  client = Client({
+    connection: {
+      secure: true,
+      reconnect: true,
+    },
+    channels: [channel],
+  });
 
-  useEffect(() => {
-    const client = Client({
-      connection: {
-        secure: true,
-        reconnect: true,
-      },
-      channels: [channel],
-    });
+  await client.connect();
 
-    client.connect();
+  client.on('message', (channel, tags, message) => {
+    console.log(`${tags['display-name']}: ${message}`);
+    messagesBuffer.push(message);
+  });
+};
 
-    let messagesBuffer: string[] = [];
-    setInterval(() => {
-      dispatch(messagesBuffer);
-      messagesBuffer = [];
-    }, 500);
+export const getMessageBuffer = () => {
+  return [...messagesBuffer];
+};
 
-    client.on('message', (channel, tags, message) => {
-      console.log(`${tags['display-name']}: ${message}`);
-      messagesBuffer.push(message);
-    });
-  }, []);
-
-  return messages;
+export const clearMessageBuffer = () => {
+  messagesBuffer = [];
 };
