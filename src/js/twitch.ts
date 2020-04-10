@@ -19,15 +19,13 @@ export const openChat = async (channel: string): Promise<void> => {
   await client.connect();
 
   client.on('message', (channel, tags, message) => {
-    console.log(`${tags['display-name']}: ${message}`);
+    //console.log(`${tags['display-name']}: ${message}`);
     messagesBuffer.push(message);
   });
 };
 
-export const getMessageBuffer = () => {
-  return [...messagesBuffer];
-};
-
-export const clearMessageBuffer = () => {
+export const flushMessageBuffer = () => {
+  const temp = [...messagesBuffer];
   messagesBuffer = [];
+  return temp;
 };

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import { ChatProvider } from './ChatContext';
 import ChatWindow from './ChatWindow';
+import FrequencyView from './FrequencyView';
 
 const App: FC = () => {
   // ha en liste med meldinger som gjentar seg.
@@ -11,9 +12,12 @@ const App: FC = () => {
   // ordsky for alle ord
   return (
     <ChatProvider channel={window.location.pathname.slice(1)}>
-      <article>
-        <h2>Twitch Chat View</h2>
-        <ChatWindow />
+      <article className="app">
+        <h1>Twitch Chat View</h1>
+        <section className="window-grid">
+          <ChatWindow />
+          <FrequencyView />
+        </section>
       </article>
     </ChatProvider>
   );

@@ -5,11 +5,12 @@ const ChatWindow: FC = () => {
   const { messages } = useChatState();
 
   return (
-    <section>
+    <article>
+      <h2>Chat Window</h2>
       {messages.map((message, i) => (
         <p key={i}>{message}</p>
       ))}
-    </section>
+    </article>
   );
 };
 

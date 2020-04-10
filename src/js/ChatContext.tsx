@@ -6,10 +6,12 @@ import React, {
   useReducer,
 } from 'react';
 import { ChatState } from '../types';
-import { clearMessageBuffer, getMessageBuffer, openChat } from './twitch';
+import { flushMessageBuffer, openChat } from './twitch';
+import { reduceFrequencyMap, reduceMessages } from './chatReducers';
 
 const initialState: ChatState = {
   messages: [],
+  frequencyMap: new Map<string, number>(),
 };
 
 const ChatContext = createContext<ChatState>(initialState);
@@ -28,14 +30,14 @@ export const ChatProvider: FC<Props> = ({ channel, children }) => {
   useEffect(() => {
     openChat(channel);
     setInterval(() => {
-      dispatch(getMessageBuffer());
-      clearMessageBuffer();
+      dispatch(flushMessageBuffer());
     }, 500);
   }, [channel]);
 
   const [chat, dispatch] = useReducer<MessageReducer>(
-    (prevMessages, newMessages) => ({
-      messages: newMessages.concat(prevMessages.messages).slice(0, 100),
+    (prevState, newMessages) => ({
+      messages: reduceMessages(prevState, newMessages),
+      frequencyMap: reduceFrequencyMap(prevState, newMessages),
     }),
     initialState
   );
