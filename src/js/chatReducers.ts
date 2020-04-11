@@ -1,22 +1,23 @@
 import { ChatState } from '../types';
+import nlp from 'wink-nlp-utils';
+import { updateFrequencies } from './utils';
 
 export const reduceMessages = (
   prevState: ChatState,
-  newMessages: string[]
-): string[] => newMessages.concat(prevState.messages).slice(0, 500);
+  newMessages: Array<string>
+): Array<string> => newMessages.concat(prevState.messages).slice(0, 500);
 
 export const reduceFrequencyMap = (
   prevState: ChatState,
-  newMessages: string[]
-): Map<string, number> => {
-  const nextMap = new Map(prevState.frequencyMap);
-  newMessages.forEach((message) => {
-    const frequency = nextMap.get(message);
-    if (frequency !== undefined) {
-      nextMap.set(message, frequency + 1);
-    } else {
-      nextMap.set(message, 1);
-    }
-  });
-  return nextMap;
+  newMessages: Array<string>
+): Map<string, number> =>
+  updateFrequencies(prevState.frequencyMap, newMessages);
+
+export const reduceWords = (
+  prevState: ChatState,
+  newMessages: Array<string>
+) => {
+  const tokens = nlp.string.tokenize0(newMessages.join(' '));
+  const proccesedTokens = nlp.tokens.removeWords(tokens).map(nlp.string.stem);
+  return updateFrequencies(prevState.words, proccesedTokens);
 };

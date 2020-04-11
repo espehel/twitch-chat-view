@@ -24,8 +24,10 @@
   "license": "MIT",
   "dependencies": {
     "react": "^16.13.1",
+    "react-d3-cloud": "^0.7.0",
     "react-dom": "^16.13.1",
-    "tmi.js": "^1.5.0"
+    "tmi.js": "^1.5.0",
+    "wink-nlp-utils": "^2.0.5"
   },
   "devDependencies": {
     "@types/react": "^16.9.32",

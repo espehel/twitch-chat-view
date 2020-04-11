@@ -7,11 +7,16 @@ import React, {
 } from 'react';
 import { ChatState } from '../types';
 import { flushMessageBuffer, openChat } from './twitch';
-import { reduceFrequencyMap, reduceMessages } from './chatReducers';
+import {
+  reduceFrequencyMap,
+  reduceMessages,
+  reduceWords,
+} from './chatReducers';
 
 const initialState: ChatState = {
   messages: [],
   frequencyMap: new Map<string, number>(),
+  words: new Map<string, number>(),
 };
 
 const ChatContext = createContext<ChatState>(initialState);
@@ -38,6 +43,7 @@ export const ChatProvider: FC<Props> = ({ channel, children }) => {
     (prevState, newMessages) => ({
       messages: reduceMessages(prevState, newMessages),
       frequencyMap: reduceFrequencyMap(prevState, newMessages),
+      words: reduceWords(prevState, newMessages),
     }),
     initialState
   );
