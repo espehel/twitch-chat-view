@@ -3,7 +3,7 @@ import { ChatState } from '../types';
 export const reduceMessages = (
   prevState: ChatState,
   newMessages: string[]
-): string[] => newMessages.concat(prevState.messages).slice(0, 100);
+): string[] => newMessages.concat(prevState.messages).slice(0, 500);
 
 export const reduceFrequencyMap = (
   prevState: ChatState,

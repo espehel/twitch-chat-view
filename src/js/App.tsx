@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import { ChatProvider } from './ChatContext';
-import ChatWindow from './ChatWindow';
+import EnhancedChat from './EnhancedChat';
 import FrequencyView from './FrequencyView';
 
 const App: FC = () => {
@@ -15,7 +15,7 @@ const App: FC = () => {
       <article className="app">
         <h1>Twitch Chat View</h1>
         <section className="window-grid">
-          <ChatWindow />
+          <EnhancedChat />
           <FrequencyView />
         </section>
       </article>
